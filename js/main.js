@@ -785,7 +785,7 @@ const WEDDING = {
   });
   introTL
     .to('.intro__hint, .intro__sub', { autoAlpha: 0, y: 16, duration: .6 }, 0)
-    .to('.env__ripple', { autoAlpha: 0, duration: .35 }, 0)
+    .to('.env__sparkle', { autoAlpha: 0, duration: .35 }, 0)
     .to('.intro__title', { autoAlpha: 0, y: 46, duration: 1 }, .2)
     .fromTo(glow, { opacity: .6, scale: 1 }, { opacity: 1, scale: 1.4, duration: .8 }, .45)
     .to(glow, { opacity: 0, scale: 1.9, duration: .5 }, 1.25)

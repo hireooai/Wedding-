@@ -361,8 +361,8 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
   background: radial-gradient(circle, rgba(255, 230, 170, .8) 0%, rgba(255, 205, 120, .35) 35%, rgba(255, 190, 90, 0) 70%);
   mix-blend-mode: screen;
 }
-.motion .env__glow::before { animation: sealPulse 2.8s ease-in-out infinite; }
-@keyframes sealPulse { 0%, 100% { transform: scale(.9); opacity: .55; } 50% { transform: scale(1.12); opacity: 1; } }
+.motion .env__glow::before { animation: sealPulse 4.6s ease-in-out infinite .4s; }
+@keyframes sealPulse { 0%, 34%, 100% { transform: scale(.92); opacity: .55; } 12% { transform: scale(1.14); opacity: 1; } }
 
 .intro__title {
   margin: clamp(16px, 3.5vh, 34px) 0 0;
@@ -374,26 +374,67 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
   font-size: 1.05rem;
   color: var(--ink);
 }
-/* "tap here" cue on the seal: rippling gold rings */
-.env__ripple {
+/* "tap here" cue on the seal: a gold shine sweeps the wax, then glints twinkle around it.
+   One burst (~1.5s), then a ~3s rest, on repeat. */
+.env__sparkle {
   left: 49.9%; top: 48.4%;
-  width: 27%; aspect-ratio: 1;
+  width: 26%; aspect-ratio: 1;
   translate: -50% -50%;
   z-index: 8;
   pointer-events: none;
 }
-.env__ripple i {
-  position: absolute; inset: 0;
+.env__sparkle .shine {
+  position: absolute; inset: 9%;
   border-radius: 50%;
-  border: 2px solid rgba(255, 228, 165, .95);
-  box-shadow: 0 0 14px rgba(255, 200, 110, .6), inset 0 0 10px rgba(255, 200, 110, .35);
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 248, 220, .9) 50%, transparent 62%) no-repeat;
+  background-size: 260% 100%;
+  background-position: 140% 0;
+  mix-blend-mode: screen;
   opacity: 0;
 }
-.motion .env__ripple i { animation: sealRipple 2.2s cubic-bezier(.2, .6, .3, 1) infinite; }
-.motion .env__ripple i:nth-child(2) { animation-delay: .35s; }
-@keyframes sealRipple {
+.env__sparkle b {
+  position: absolute;
+  width: calc(20% * var(--s, 1)); aspect-ratio: 1;
+  translate: -50% -50%;
+  opacity: 0;
+}
+.env__sparkle b::before { /* four-point glint */
+  content: ""; position: absolute; inset: 0;
+  clip-path: polygon(50% 0, 59% 41%, 100% 50%, 59% 59%, 50% 100%, 41% 59%, 0 50%, 41% 41%);
+  background: radial-gradient(circle, #fff 0 24%, #fff0c4 46%, #e8b955 82%);
+}
+.env__sparkle b::after { /* its soft glow */
+  content: ""; position: absolute; inset: 18%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 246, 215, .95), rgba(255, 212, 125, .4) 50%, rgba(255, 212, 125, 0) 74%);
+}
+.env__sparkle::after { /* soft halo the glints sit in */
+  content: ""; position: absolute; inset: -18%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 220, 140, .0) 38%, rgba(255, 214, 130, .35) 52%, rgba(255, 214, 130, 0) 70%);
+  opacity: 0;
+}
+.motion .env__sparkle .shine { animation: sealShine 4.6s ease-in-out infinite .4s; }
+.motion .env__sparkle b { animation: glint 4.6s ease-out infinite; animation-delay: calc(.5s + var(--d)); }
+.motion .env__sparkle::after { animation: halo 4.6s ease-out infinite .45s; }
+@keyframes sealShine {
+  0% { background-position: 140% 0; opacity: 0; }
+  3% { opacity: 1; }
+  18% { background-position: -40% 0; opacity: 1; }
+  21%, 100% { background-position: -40% 0; opacity: 0; }
+}
+@keyframes glint {
+  0% { transform: scale(0) rotate(0deg); opacity: 0; }
+  6% { transform: scale(1) rotate(45deg); opacity: 1; }
+  16% { transform: scale(0) rotate(110deg); opacity: 0; }
+  100% { transform: scale(0); opacity: 0; }
+}
+@keyframes halo {
   0% { transform: scale(.85); opacity: 0; }
-  12% { opacity: .95; }
+  10% { opacity: 1; }
+  32% { transform: scale(1.15); opacity: 0; }
+  100% { opacity: 0; }
+}
   100% { transform: scale(1.95); opacity: 0; }
 }
 .intro__sub { margin: 4px 0 0; font-size: .9rem; color: var(--ink-soft); font-style: italic; }
