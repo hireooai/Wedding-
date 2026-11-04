@@ -785,7 +785,7 @@ const WEDDING = {
   });
   introTL
     .to('.intro__hint, .intro__sub', { autoAlpha: 0, y: 16, duration: .6 }, 0)
-    .to('.env__ripple, .env__tap', { autoAlpha: 0, duration: .35 }, 0)
+    .to('.env__ripple', { autoAlpha: 0, duration: .35 }, 0)
     .to('.intro__title', { autoAlpha: 0, y: 46, duration: 1 }, .2)
     .fromTo(glow, { opacity: .6, scale: 1 }, { opacity: 1, scale: 1.4, duration: .8 }, .45)
     .to(glow, { opacity: 0, scale: 1.9, duration: .5 }, 1.25)
@@ -808,17 +808,6 @@ const WEDDING = {
     addArt(gsap.timeline({ defaults: { ease: 'power3.out' }, scrollTrigger: { trigger: '.hero__art', start: 'top 82%', pinnedContainer: opening } }));
   }
 
-  const wiggle = gsap.timeline({ repeat: -1, repeatDelay: 2.8, delay: 1.6 })
-    .to(env, { rotation: -2.2, duration: .07, ease: 'power1.inOut' })
-    .to(env, { rotation: 2.2, duration: .12, ease: 'power1.inOut', repeat: 3, yoyo: true })
-    .to(env, { rotation: 0, duration: .12, ease: 'power1.out' });
-  const calmEnvelope = () => { if (!wiggle.paused()) { wiggle.pause(); gsap.to(env, { rotation: 0, duration: .2, overwrite: 'auto' }); } };
-  ScrollTrigger.create({
-    trigger: opening, start: 'top top', end: () => '+=' + Math.round(innerHeight * .02),
-    onLeave: calmEnvelope,
-    onEnterBack: () => { if (!autoplay) wiggle.restart(true); },
-  });
-
   // tap / Enter on the envelope: the seal is pressed, a short pause, then the
   // opening plays in three stages — flap, card, reveal (~7s total).
   // Any wheel / touch / key from the guest hands control straight back.
@@ -840,7 +829,6 @@ const WEDDING = {
     // listen from the next tick so the tap that started this doesn't cancel it
     setTimeout(() => CANCEL.forEach((t) => addEventListener(t, stop, { passive: true })), 0);
 
-    calmEnvelope();
     const r = glow.getBoundingClientRect();
     FX.sparkle(r.left + r.width / 2, r.top + r.height / 2, 22, .6);
     gsap.timeline()
