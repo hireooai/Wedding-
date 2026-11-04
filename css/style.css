@@ -519,9 +519,9 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
   position: absolute; left: 6%; bottom: 5%;
   z-index: 5;
   margin: 0;
-  display: flex; flex-direction: column; gap: 2px;
-  padding: 12px 18px 13px;
-  border-radius: 16px;
+  display: flex; flex-direction: column; gap: 1px;
+  padding: 8px 13px 9px;
+  border-radius: 12px;
   border: 1px solid rgba(230, 194, 122, .55);
   background: linear-gradient(135deg, rgba(122, 19, 17, .74), rgba(74, 10, 12, .58));
   -webkit-backdrop-filter: blur(8px) saturate(1.15);
@@ -530,10 +530,10 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
   color: #fff;
   text-shadow: 0 1px 2px rgba(40, 0, 5, .35);
   text-align: left;
-  font-size: clamp(.9rem, 1.1vw, 1.02rem);
+  font-size: clamp(.76rem, .88vw, .86rem);
 }
 .regards span { color: var(--gold-hi); font-style: italic; }
-.regards strong { font-size: 1.4em; font-weight: 600; line-height: 1.2; }
+.regards strong { font-size: 1.28em; font-weight: 600; line-height: 1.2; }
 
 .scroll-cue {
   position: absolute; left: 50%; bottom: 18px;
@@ -568,7 +568,7 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
   .hero__copy { margin: 0 auto; max-width: 520px; }
   .hero__art { width: min(100%, 460px); margin-top: 40px; }
   .couple { right: -7%; bottom: -2%; width: 58%; }
-  .regards { left: 5%; bottom: 4%; padding: 9px 13px 10px; border-radius: 13px; font-size: .78rem; }
+  .regards { left: 5%; bottom: 4%; padding: 6px 10px 7px; border-radius: 10px; font-size: .68rem; }
   .names { font-size: clamp(3.6rem, 17vw, 5.4rem); }
   .scroll-cue { display: none; }
 }
