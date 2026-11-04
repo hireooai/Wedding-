@@ -395,7 +395,6 @@ const WEDDING = {
     env && env.addEventListener('click', toHero);
     env && env.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toHero(); } });
     $('.footer__replay')?.addEventListener('click', () => window.scrollTo(0, 0));
-    $('.intro__cta')?.addEventListener('click', toHero);
     return;
   }
 
@@ -785,7 +784,7 @@ const WEDDING = {
     },
   });
   introTL
-    .to('.intro__cta, .intro__sub', { autoAlpha: 0, y: 16, duration: .6 }, 0)
+    .to('.intro__hint, .intro__sub', { autoAlpha: 0, y: 16, duration: .6 }, 0)
     .to('.intro__title', { autoAlpha: 0, y: 46, duration: 1 }, .2)
     .fromTo(glow, { opacity: .6, scale: 1 }, { opacity: 1, scale: 1.4, duration: .8 }, .45)
     .to(glow, { opacity: 0, scale: 1.9, duration: .5 }, 1.25)
@@ -812,7 +811,6 @@ const WEDDING = {
   // opening plays in three stages — flap, card, reveal (~7s total).
   // Any wheel / touch / key from the guest hands control straight back.
   let autoplay = null;
-  const cta = $('.intro__cta');
   const openEnvelope = () => {
     const st = introTL.scrollTrigger;
     if (autoplay || window.scrollY >= st.end - 4) return;
@@ -822,7 +820,7 @@ const WEDDING = {
     const unbind = () => CANCEL.forEach((t) => removeEventListener(t, stop));
     const finish = () => { unbind(); if (autoplay === run) autoplay = null; };
     function stop(e) {
-      if (e && e.type === 'keydown' && (e.repeat || ((e.target === env || e.target === cta) && (e.key === 'Enter' || e.key === ' ')))) return;
+      if (e && e.type === 'keydown' && (e.repeat || (e.target === env && (e.key === 'Enter' || e.key === ' ')))) return;
       run.cancelled = true;
       haltScroll();
       finish();
@@ -849,7 +847,6 @@ const WEDDING = {
     setTimeout(next, 550);
   };
   env.addEventListener('click', openEnvelope);
-  cta.addEventListener('click', openEnvelope);
   env.addEventListener('keydown', (e) => { if (e.repeat) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openEnvelope(); } });
 
   // envelope tilts toward the mouse while it is still sealed
