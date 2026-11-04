@@ -12,7 +12,9 @@ corner_svg = ('<svg viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke
               '<path d="M14 21c0-4 2.5-7 6.5-7 3 0 5 2 5 4.6 0 2.4-1.8 4-4 4"/>'
               '<circle cx="2" cy="44" r="1.4" fill="currentColor"/><circle cx="44" cy="2" r="1.4" fill="currentColor"/></svg>')
 corners = "".join(f'<span class="corner corner--{c}" aria-hidden="true">{corner_svg}</span>' for c in ("tl", "tr", "bl", "br"))
-html = tpl.replace("{{GANESHA}}", ganesha).replace("{{CORNERS}}", corners)
+# The address guests share; link previews need absolute URLs. Change this if the domain changes.
+SITE_URL = "https://www.abhikipranju.online"
+html = tpl.replace("{{GANESHA}}", ganesha).replace("{{CORNERS}}", corners).replace("{{SITE_URL}}", SITE_URL)
 (site / "index.html").write_text(html)
 
 # Artifact copy: the artifact host supplies <!doctype>/<html>/<head>/<body> itself.

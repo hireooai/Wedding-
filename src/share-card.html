@@ -1,0 +1,52 @@
+<!doctype html>
+<!-- Source for assets/og-image.jpg (the WhatsApp / social link preview).
+     Rendered at 1200×630 by a headless browser; edit and re-render if details change. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=STIX+Two+Text:wght@400;600&display=block">
+<style>
+  html, body { margin: 0; }
+  body {
+    width: 1200px; height: 630px; overflow: hidden; position: relative;
+    background: radial-gradient(120% 95% at 50% 40%, #fffaf8 0%, #fdeeea 55%, #f6d7d3 100%);
+    font-family: "STIX Two Text", Georgia, serif; color: #86151c;
+  }
+  .wash { position: absolute; left: -4%; right: -4%; height: 60%; background: url("../assets/wash.jpg") center bottom / cover no-repeat; mix-blend-mode: multiply; }
+  .wash--b { bottom: -6%; opacity: .95; }
+  .wash--t { top: -10%; opacity: .45; transform: scaleY(-1); }
+  /* bougainvillea + lanterns from the card's own scene, faded into the corners */
+  .corner { position: absolute; top: 0; width: 330px; height: 330px; background: url("../assets/scene.jpg") no-repeat; background-size: 900px auto; mix-blend-mode: multiply; }
+  .corner--l { left: 0; background-position: 0 0; -webkit-mask: radial-gradient(120% 120% at 0 0, #000 45%, transparent 72%); mask: radial-gradient(120% 120% at 0 0, #000 45%, transparent 72%); }
+  .corner--r { right: 0; background-position: 100% 0; -webkit-mask: radial-gradient(120% 120% at 100% 0, #000 45%, transparent 72%); mask: radial-gradient(120% 120% at 100% 0, #000 45%, transparent 72%); }
+  .stack { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .env { width: 286px; height: auto; display: block; filter: drop-shadow(0 22px 26px rgba(110, 15, 21, .32)) drop-shadow(0 5px 8px rgba(110, 15, 21, .2)); }
+  .names { margin: 22px 0 0; font-family: "Kaushan Script", cursive; font-size: 70px; line-height: 1.05; }
+  .rule { display: flex; align-items: center; gap: 12px; width: 300px; margin: 14px 0 12px; }
+  .rule::before, .rule::after { content: ""; flex: 1; height: 1.5px; background: linear-gradient(90deg, rgba(184,137,58,0), rgba(184,137,58,.85)); }
+  .rule::after { background: linear-gradient(90deg, rgba(184,137,58,.85), rgba(184,137,58,0)); }
+  .rule i { width: 9px; height: 9px; transform: rotate(45deg); background: #b8893a; }
+  .when { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: .1em; padding-left: .1em; text-transform: uppercase; color: #6a0f15; }
+  .petal { position: absolute; width: 22px; height: 26px; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: radial-gradient(circle at 40% 35%, #ffb3c2, #e0365e 60%, #a3102f); opacity: .85; }
+  .dust { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: #d7a64c; opacity: .55; }
+</style>
+</head>
+<body>
+  <div class="wash wash--t"></div>
+  <div class="wash wash--b"></div>
+  <div class="corner corner--l"></div>
+  <div class="corner corner--r"></div>
+  <span class="petal" style="left:250px;top:430px;transform:rotate(-32deg) scale(.9)"></span>
+  <span class="petal" style="left:930px;top:470px;transform:rotate(48deg) scale(1.1)"></span>
+  <span class="petal" style="left:860px;top:250px;transform:rotate(12deg) scale(.7);opacity:.6"></span>
+  <span class="petal" style="left:310px;top:215px;transform:rotate(-70deg) scale(.6);opacity:.55"></span>
+  <span class="dust" style="left:205px;top:330px"></span><span class="dust" style="left:1010px;top:360px"></span>
+  <span class="dust" style="left:420px;top:560px"></span><span class="dust" style="left:770px;top:95px"></span>
+  <div class="stack">
+    <img class="env" src="../assets/envelope.jpg" alt="">
+    <p class="names">Abhishek &amp; Pranjal</p>
+    <span class="rule"><i></i></span>
+    <p class="when">28 January 2027 · Rajputana Resort, Dhampur</p>
+  </div>
+</body>
+</html>
