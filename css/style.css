@@ -262,8 +262,8 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
 /* the envelope — 772×779 artwork split into back / interior / pocket / flap */
 .env {
   position: relative;
-  width: min(80vw, 52vh, 470px);
-  width: min(80vw, 52svh, 470px);
+  width: min(80vw, 50vh, 470px);
+  width: min(80vw, 50svh, 470px);
   aspect-ratio: 772 / 779;
   perspective: 1600px;
   cursor: pointer;
@@ -365,13 +365,14 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
 @keyframes sealPulse { 0%, 34%, 100% { transform: scale(.92); opacity: .55; } 12% { transform: scale(1.14); opacity: 1; } }
 
 .intro__title {
-  margin: clamp(16px, 3.5vh, 34px) 0 0;
-  font-size: clamp(2.7rem, 6.4vw, 4.4rem);
+  margin: clamp(14px, 3vh, 30px) 0 0;
+  font-size: clamp(2.5rem, min(6.4vw, 8.5vh), 4.4rem);
   color: var(--maroon);
 }
 .intro__hint {
-  margin: 6px 0 0;
-  font-size: 1.05rem;
+  margin: 0;
+  font-size: clamp(1rem, 1.25vw, 1.1rem);
+  letter-spacing: .02em;
   color: var(--ink);
 }
 /* "tap here" cue on the seal: a gold shine sweeps the wax, then glints twinkle around it.
@@ -435,9 +436,37 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
   32% { transform: scale(1.15); opacity: 0; }
   100% { opacity: 0; }
 }
-  100% { transform: scale(1.95); opacity: 0; }
+
+/* the cue under "You're Invited": gold divider, the instruction, then the alternative */
+.intro__cue {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 6px;
+  margin-top: clamp(6px, 1.4vh, 12px);
 }
-.intro__sub { margin: 4px 0 0; font-size: .9rem; color: var(--ink-soft); font-style: italic; }
+.intro__rule {
+  display: flex; align-items: center; gap: 10px;
+  width: min(220px, 56vw);
+  margin-bottom: 4px;
+}
+.intro__rule::before, .intro__rule::after {
+  content: ""; flex: 1; height: 1px;
+  background: linear-gradient(90deg, rgba(184, 137, 58, 0), rgba(184, 137, 58, .75));
+}
+.intro__rule::after { background: linear-gradient(90deg, rgba(184, 137, 58, .75), rgba(184, 137, 58, 0)); }
+.intro__rule i { width: 7px; height: 7px; transform: rotate(45deg); background: var(--gold); }
+.intro__sub {
+  display: inline-flex; align-items: center; gap: 7px;
+  margin: 0;
+  font-size: .88rem; font-style: italic;
+  color: var(--ink-soft);
+}
+.intro__arrow {
+  width: 6px; height: 6px;
+  border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+}
+.motion .intro__arrow { animation: nudge 1.8s ease-in-out infinite; }
+@keyframes nudge { 0%, 100% { translate: 0 0; } 50% { translate: 0 3px; } }
 
 /* ---------- hero (the card's second page) ---------- */
 .hero {
