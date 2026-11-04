@@ -1121,7 +1121,7 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
   max-width: 88%;
 }
 .footer__names { margin: 0; font-size: clamp(2.5rem, 5.4vw, 4.6rem); line-height: 1.1; color: #fff; text-wrap: balance; }
-.footer__ganesha { width: calc(var(--m) * .27); height: auto; margin-top: clamp(2px, .6vw, 8px); }
+.footer__ganesha { width: calc(var(--m) * .34); height: auto; margin-top: clamp(2px, .6vw, 8px); }
 .footer__meta { position: relative; z-index: 2; margin-top: clamp(6px, 1.4vh, 16px); }
 .footer__date, .footer__tag { position: relative; z-index: 2; margin: 0; font-weight: 600; letter-spacing: .32em; padding-left: .32em; text-transform: uppercase; font-size: clamp(1rem, 2.2vw, 1.35rem); }
 .footer__tag { margin-top: 8px; }
