@@ -57,14 +57,14 @@ const WEDDING = {
       desc: 'Our wedding day begins with cherished family rituals and the warm blessings of our elders.',
     },
     {
-      id: 'jaimala',
+      id: 'wedding',
       theme: 'jaimala',
-      title: 'Jaimala',
+      title: 'Wedding Ceremony',
       badge: 'Evening',
-      start: '2027-01-28T20:00',
+      start: '2027-01-28T17:00',
       end: '2027-01-28T23:00',
-      timeLabel: '8:00 PM',
-      desc: 'Garlands exchanged amid cheers and laughter — the moment we choose each other in front of everyone we love.',
+      timeLabel: '5:00 PM',
+      desc: 'Our wedding evening — garlands, blessings and cheer, as we choose each other in front of everyone we love.',
       main: true,
     },
     {
@@ -73,7 +73,7 @@ const WEDDING = {
       title: 'Pheras',
       badge: 'Night',
       date: '2027-01-28',
-      timeLabel: 'After the Jaimala',
+      timeLabel: 'Later that night',
       desc: 'Seven sacred vows around the holy fire, beneath the stars — our promise of forever.',
     },
     {
@@ -121,14 +121,9 @@ const WEDDING = {
   const weekday = part(mainDate, { weekday: 'long' });
   const monthNum = part(mainDate, { month: '2-digit' });
 
-  const NUM = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve'];
-  const numWord = (n) => NUM[n] || String(n);
   const dayKey = (e) => (e.start || e.date).slice(0, 10);
-  const dayTotal = new Set(WEDDING.events.map(dayKey)).size;
-  const eventTotal = WEDDING.events.length;
 
   const binds = {
-    eventsEyebrow: `${numWord(dayTotal)} ${dayTotal === 1 ? 'day' : 'days'} · ${numWord(eventTotal)} ${eventTotal === 1 ? 'ceremony' : 'ceremonies'}`,
     dateLong: `${dayNum} ${monthName}, ${year}`,
     dateOrdinal: `${dayNum}<sup>${ordinal(dayNum)}</sup> ${monthName} ${year}`,
     saveLine: `${weekday} · ${WEDDING.venue.name}, ${WEDDING.venue.city}`,
@@ -286,7 +281,7 @@ const WEDDING = {
     let side = 0, html = '';
     days.forEach((d, i) => {
       const dt = at(`${d.key}T12:00`);
-      html += `<div class="tl__day"><span>Day ${numWord(i + 1)}</span><strong>${part(dt, { weekday: 'long' })}, ${part(dt, { day: 'numeric', month: 'long' })}</strong></div>`;
+      html += `<div class="tl__day"><strong>${part(dt, { weekday: 'long' })}, ${part(dt, { day: 'numeric', month: 'long' })}</strong></div>`;
       d.events.forEach((e) => {
         const s = side++ % 2 ? 'right' : 'left';
         const fx = e.theme === 'night'
@@ -326,14 +321,11 @@ const WEDDING = {
       if (!el || last[unit] === value) return;
       const first = last[unit] === undefined;
       last[unit] = value;
-      if (first || !motion) { el.textContent = value; return; }
-      const box = el.parentElement;
-      const next = el.cloneNode(false);
-      next.textContent = value;
-      box.appendChild(next);
-      gsap.fromTo(next, { yPercent: 70, rotationX: -70, opacity: 0 }, { yPercent: 0, rotationX: 0, opacity: 1, duration: .6, ease: 'power3.out' });
-      gsap.to(el, { yPercent: -70, rotationX: 70, opacity: 0, duration: .5, ease: 'power2.in', onComplete: () => el.remove() });
-      nums[unit] = next;
+      el.textContent = value;
+      if (first || !motion) return;
+      el.classList.remove('is-flip');
+      void el.offsetWidth; // restart the flip animation
+      el.classList.add('is-flip');
     }
     const pad = (v) => String(v).padStart(2, '0');
     const lives = $$('.event__live').map((el) => ({
@@ -749,7 +741,7 @@ const WEDDING = {
     .fromTo('.arch__line path', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 2.4, ease: 'power2.inOut', stagger: .25 }, .1)
     .fromTo('.arch__line circle', { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: .6, ease: 'back.out(3)' }, 1.6)
     .fromTo('.couple', { x: 90, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 1.8 }, .8)
-    .fromTo('.regards > *', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, stagger: .15, duration: .9 }, 2.4)
+    .fromTo('.regards', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: .9 }, 2.4)
     .fromTo('.glow', { autoAlpha: 0 }, { autoAlpha: 1, stagger: .12, duration: 1.2 }, 1.4);
   const heroIn = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
   if (!narrow) addArt(heroIn);
@@ -818,7 +810,7 @@ const WEDDING = {
   }
 
   // tap / Enter on the envelope: the seal is pressed, a short pause, then the
-  // opening plays in three unhurried stages — flap, card, reveal (~10s total).
+  // opening plays in three stages — flap, card, reveal (~7s total).
   // Any wheel / touch / key from the guest hands control straight back.
   let autoplay = null;
   const openEnvelope = () => {
@@ -846,15 +838,15 @@ const WEDDING = {
 
     const yAt = (t) => st.start + (st.end - st.start) * (t / T.total);
     // skip any stage the guest has already scrolled past
-    const stages = [[yAt(3.9), 3.2], [yAt(6.4), 2.8], [st.end + 2, 3.2]].filter(([y]) => y > window.scrollY + 4);
+    const stages = [[yAt(3.9), 2.2], [yAt(6.4), 1.9], [st.end + 2, 2.2]].filter(([y]) => y > window.scrollY + 4);
     let i = 0;
     const next = () => {
       if (run.cancelled) return;
       if (i >= stages.length) { finish(); return; }
       const [y, d] = stages[i++];
-      scrollTo(y, d, () => setTimeout(next, i < stages.length ? 450 : 0), easeInOutSine);
+      scrollTo(y, d, () => setTimeout(next, i < stages.length ? 300 : 0), easeInOutSine);
     };
-    setTimeout(next, 800);
+    setTimeout(next, 550);
   };
   env.addEventListener('click', openEnvelope);
   env.addEventListener('keydown', (e) => { if (e.repeat) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openEnvelope(); } });
@@ -1023,9 +1015,10 @@ const WEDDING = {
   /* ---------------------------------------------------------- footer */
   gsap.fromTo('.footer__mandala', { scale: .5, autoAlpha: 0, rotation: -60 }, { scale: 1, autoAlpha: 1, rotation: 0, duration: 2, ease: 'power3.out', scrollTrigger: { trigger: '.footer', start: 'top 80%' } });
   gsap.fromTo('.footer__names', { clipPath: 'inset(-30% 100% -30% -10%)' }, { clipPath: 'inset(-30% -10% -30% -10%)', duration: 1.8, ease: 'power2.inOut', scrollTrigger: { trigger: '.footer', start: 'top 75%' } });
+  gsap.fromTo('.footer__ganesha', { scale: .6, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 1.4, ease: 'back.out(1.6)', scrollTrigger: { trigger: '.footer', start: 'top 65%' } });
   ScrollTrigger.create({
     trigger: '.footer', start: 'top 55%', once: true,
-    onEnter: () => { const r = $('.footer__emblem').getBoundingClientRect(); FX.sparkle(r.left + r.width / 2, r.top + r.height / 2, 60, 1.2); FX.burst(finePointer ? 60 : 36); },
+    onEnter: () => { const r = $('.footer__ganesha').getBoundingClientRect(); FX.sparkle(r.left + r.width / 2, r.top + r.height / 2, 60, 1.2); FX.burst(finePointer ? 60 : 36); },
   });
   $('.footer__replay').addEventListener('click', () => scrollTo(0, 3.2));
 

@@ -431,14 +431,16 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
 .wi { display: inline-block; }
 
 .names {
-  margin: clamp(10px, 2vh, 20px) 0 0;
+  margin: clamp(18px, 3.4vh, 36px) 0 0;
   font-family: var(--script);
   font-weight: 400;
   color: var(--maroon);
-  font-size: clamp(4rem, 8.6vw, 8.4rem);
+  font-size: clamp(4rem, min(8.6vw, 14.5vh), 8.4rem);
   line-height: .98;
 }
 .names > span { display: block; padding: 0 .12em; }
+/* the "j" of Pranjal drops well below the line — give it room before the next line */
+.names .names__two { padding-bottom: .3em; }
 .names__amp { font-size: .55em; line-height: 1.25; }
 .hero__knot { margin: clamp(8px, 2vh, 18px) 0 0; font-size: clamp(1.05rem, 1.4vw, 1.25rem); text-wrap: balance; }
 
@@ -514,16 +516,24 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
   pointer-events: none;
 }
 .regards {
-  position: absolute; left: 8%; bottom: 6%;
-  z-index: 3;
+  position: absolute; left: 6%; bottom: 5%;
+  z-index: 5;
   margin: 0;
-  display: flex; flex-direction: column;
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 12px 18px 13px;
+  border-radius: 16px;
+  border: 1px solid rgba(230, 194, 122, .55);
+  background: linear-gradient(135deg, rgba(122, 19, 17, .74), rgba(74, 10, 12, .58));
+  -webkit-backdrop-filter: blur(8px) saturate(1.15);
+  backdrop-filter: blur(8px) saturate(1.15);
+  box-shadow: 0 14px 30px -14px rgba(40, 0, 5, .65), inset 0 1px 0 rgba(255, 255, 255, .14);
   color: #fff;
-  text-shadow: 0 2px 14px rgba(60, 20, 10, .55), 0 1px 2px rgba(60, 20, 10, .4);
+  text-shadow: 0 1px 2px rgba(40, 0, 5, .35);
   text-align: left;
-  font-size: clamp(.95rem, 1.2vw, 1.08rem);
+  font-size: clamp(.9rem, 1.1vw, 1.02rem);
 }
-.regards strong { font-size: 1.45em; font-weight: 600; line-height: 1.2; }
+.regards span { color: var(--gold-hi); font-style: italic; }
+.regards strong { font-size: 1.4em; font-weight: 600; line-height: 1.2; }
 
 .scroll-cue {
   position: absolute; left: 50%; bottom: 18px;
@@ -558,7 +568,7 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
   .hero__copy { margin: 0 auto; max-width: 520px; }
   .hero__art { width: min(100%, 460px); margin-top: 40px; }
   .couple { right: -7%; bottom: -2%; width: 58%; }
-  .regards { left: 7%; bottom: 5%; font-size: .85rem; }
+  .regards { left: 5%; bottom: 4%; padding: 9px 13px 10px; border-radius: 13px; font-size: .78rem; }
   .names { font-size: clamp(3.6rem, 17vw, 5.4rem); }
   .scroll-cue { display: none; }
 }
@@ -607,10 +617,6 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
   box-shadow: 0 16px 30px -24px rgba(134, 21, 28, .45);
   overflow: hidden;
 }
-.cd__box::before {
-  content: ""; position: absolute; left: 12%; right: 12%; top: 50%;
-  height: 1px; background: rgba(236, 188, 197, .5);
-}
 .cd__num {
   position: absolute; inset: 0;
   display: grid; place-items: center;
@@ -620,6 +626,12 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
   font-variant-numeric: tabular-nums;
   line-height: 1;
   padding-top: .1em;
+}
+.cd__box { perspective: 420px; }
+.motion .cd__num.is-flip { animation: cdFlip .6s var(--ease-out); }
+@keyframes cdFlip {
+  from { transform: translateY(36%) rotateX(-70deg); opacity: .15; }
+  to { transform: none; opacity: 1; }
 }
 .cd__label { font-size: clamp(.78rem, 1.8vw, 1rem); letter-spacing: .08em; text-transform: uppercase; color: var(--maroon); }
 .save__after { margin: 22px 0 0; font-style: italic; color: var(--ink-soft); }
@@ -688,7 +700,6 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
   box-shadow: 0 10px 30px -18px rgba(134, 21, 28, .45);
   text-align: center;
 }
-.tl__day span { font-size: .72rem; letter-spacing: .4em; text-transform: uppercase; padding-left: .4em; color: var(--rose); }
 .tl__day strong { font-weight: 500; color: var(--maroon); font-size: 1.12rem; }
 
 .event {
@@ -1083,31 +1094,41 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
    -------------------------------------------------------------------------- */
 .footer {
   position: relative;
-  padding: clamp(80px, 12vh, 120px) var(--gutter) clamp(56px, 9vh, 90px);
+  display: flex; flex-direction: column; align-items: center;
+  padding: clamp(36px, 6vh, 72px) var(--gutter) clamp(88px, 13vh, 120px);
   text-align: center;
   color: #fff;
   background: radial-gradient(90% 70% at 50% 45%, #8f1a1d 0%, var(--maroon-deep) 60%, #5e0d0c 100%);
   overflow: clip;
 }
 .footer .eyebrow { color: #fff; }
-.footer__names { margin: 10px 0 0; font-size: clamp(3.2rem, 9vw, 6.2rem); color: #fff; position: relative; z-index: 2; text-wrap: balance; }
-.footer__emblem { position: relative; height: clamp(190px, 26vw, 250px); margin: -18px 0 0; }
-.footer__mandala {
-  position: absolute; left: 50%; top: 50%;
-  width: clamp(420px, 60vw, 600px); aspect-ratio: 1;
-  translate: -50% -50%;
-  pointer-events: none;
+/* the mandala is a square stage; names + Ganesha sit as one group at its exact centre */
+.footer__stage {
+  --m: clamp(440px, 64vw, 720px);
+  position: relative;
+  flex: none;
+  width: var(--m); height: var(--m);
+  display: grid; place-items: center;
 }
-.footer__mandala img { position: absolute; inset: 0; width: 100%; height: 100%; }
-.footer__mandala .ring { opacity: .26; }
+.footer__mandala { position: absolute; inset: 0; pointer-events: none; }
+.footer__mandala .ring { width: 100%; height: 100%; opacity: .26; }
 .motion .footer__mandala .ring { animation: spin 140s linear infinite; }
-.footer__mandala .ganesh { width: 100%; }
 @keyframes spin { to { transform: rotate(360deg); } }
+.footer__center {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center;
+  gap: clamp(6px, 1vw, 12px);
+  max-width: 88%;
+}
+.footer__names { margin: 0; font-size: clamp(2.5rem, 5.4vw, 4.6rem); line-height: 1.1; color: #fff; text-wrap: balance; }
+.footer__ganesha { width: calc(var(--m) * .27); height: auto; margin-top: clamp(2px, .6vw, 8px); }
+.footer__meta { position: relative; z-index: 2; margin-top: clamp(6px, 1.4vh, 16px); }
 .footer__date, .footer__tag { position: relative; z-index: 2; margin: 0; font-weight: 600; letter-spacing: .32em; padding-left: .32em; text-transform: uppercase; font-size: clamp(1rem, 2.2vw, 1.35rem); }
 .footer__tag { margin-top: 8px; }
 .footer__replay {
-  position: relative; z-index: 2;
-  margin-top: 40px;
+  position: absolute; z-index: 2;
+  right: var(--gutter); bottom: clamp(20px, 4vh, 34px);
+  margin: 0;
   padding: 12px 22px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, .4);
@@ -1119,6 +1140,10 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
   transition: background-color .3s, border-color .3s;
 }
 .footer__replay:hover { background: rgba(255, 255, 255, .14); border-color: var(--gold-hi); }
+@media (max-width: 700px) {
+  .footer { padding-bottom: 32px; }
+  .footer__replay { position: relative; right: auto; bottom: auto; align-self: flex-end; margin-top: 30px; }
+}
 .footer__credit { position: relative; z-index: 2; margin: 26px 0 0; font-size: .85rem; color: rgba(255, 255, 255, .6); }
 
 /* --------------------------------------------------------------------------
