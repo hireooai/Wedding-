@@ -40,7 +40,7 @@ const WEDDING = {
       id: 'engagement',
       theme: 'night',
       title: 'Engagement Ceremony',
-      badge: 'Night',
+      badge: 'Evening',
       start: '2027-01-27T19:00',
       end: '2027-01-27T23:00',
       timeLabel: '7:00 PM onwards',
@@ -71,9 +71,9 @@ const WEDDING = {
       id: 'pheras',
       theme: 'pheras',
       title: 'Pheras',
-      badge: 'Late Night',
+      badge: 'Night',
       date: '2027-01-28',
-      timeLabel: 'Late night, after the Jaimala',
+      timeLabel: 'After the Jaimala',
       desc: 'Seven sacred vows around the holy fire, beneath the stars — our promise of forever.',
     },
     {
@@ -82,7 +82,7 @@ const WEDDING = {
       title: 'Vidai',
       date: '2027-01-29',
       timeLabel: 'Following the pheras',
-      desc: 'A tender farewell wrapped in blessings, as Pranjal sets out for a new home.',
+      desc: 'A tender farewell wrapped in our families’ blessings, as we set out together to begin our new life.',
     },
   ],
 };
@@ -256,12 +256,12 @@ const WEDDING = {
     return new Date(Date.UTC(Y, M - 1, D + 1)).toISOString().slice(0, 10);
   };
   const gcal = (e) => {
-    const f = (s) => s.replace(/[-:]/g, '') + '00';
+    const z = (ms) => new Date(ms).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
     const p = new URLSearchParams({
       action: 'TEMPLATE',
       text: `${e.title} · Abhishek & Pranjal`,
       dates: e.start
-        ? `${f(e.start)}/${f(e.end || e.start)}`
+        ? `${z(startMs(e))}/${z(endMs(e))}`
         : `${e.date.replace(/-/g, '')}/${nextDay(e.date).replace(/-/g, '')}`,
       location: `${WEDDING.venue.name}, ${WEDDING.venue.city}`,
       details: `${e.timeLabel} — ${e.desc}\n\nDirections: ${directionsUrl}`,
@@ -292,7 +292,7 @@ const WEDDING = {
         const fx = e.theme === 'night'
           ? Array.from({ length: 14 }, () => `<i class="star" style="left:${rand(4, 96).toFixed(1)}%;top:${rand(4, 96).toFixed(1)}%;--t:${rand(2, 4.5).toFixed(2)}s;--dl:${rand(0, 3).toFixed(2)}s"></i>`).join('')
           : e.theme === 'pheras'
-            ? Array.from({ length: 12 }, () => `<i class="ember" style="left:${rand(18, 82).toFixed(1)}%;--t:${rand(2.6, 4.8).toFixed(2)}s;--dl:${rand(0, 4).toFixed(2)}s;--dx:${rand(-30, 30).toFixed(0)}px"></i>`).join('')
+            ? Array.from({ length: 12 }, () => `<i class="ember" style="left:${rand(18, 82).toFixed(1)}%;bottom:${rand(4, 30).toFixed(1)}%;--t:${rand(2.6, 4.8).toFixed(2)}s;--dl:${rand(0, 4).toFixed(2)}s;--dx:${rand(-30, 30).toFixed(0)}px"></i>`).join('')
             : '';
         const when = e.start ? `${e.start}${WEDDING.tzOffset}` : e.date;
         const live = e.start
@@ -360,8 +360,9 @@ const WEDDING = {
       }
     }
     function tick() {
-      tickEvents(Date.now());
-      let diff = Math.max(0, mainDate.getTime() - Date.now());
+      const now = Date.now();
+      tickEvents(now);
+      let diff = Math.max(0, mainDate.getTime() - now);
       const d = Math.floor(diff / 864e5); diff -= d * 864e5;
       const h = Math.floor(diff / 36e5); diff -= h * 36e5;
       const m = Math.floor(diff / 6e4); diff -= m * 6e4;
@@ -370,10 +371,10 @@ const WEDDING = {
       set('hours', String(h).padStart(2, '0'));
       set('minutes', String(m).padStart(2, '0'));
       set('seconds', String(s).padStart(2, '0'));
-      if (mainDate.getTime() <= Date.now() && note) note.textContent = 'and so our forever began — thank you for being part of it';
+      if (mainDate.getTime() <= now && note) note.textContent = 'and so our forever began — thank you for being part of it';
     }
-    tick();
-    setInterval(tick, 1000);
+    // tick just after each wall-clock second so digits never repeat or skip
+    (function loop() { tick(); setTimeout(loop, 1000 - (Date.now() % 1000) + 20); })();
     return { tick };
   })();
 
@@ -425,10 +426,26 @@ const WEDDING = {
   }
   const easeInOutCubic = (t) => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
   const easeInOutSine = (t) => -(Math.cos(Math.PI * t) - 1) / 2;
+  let nativeTween = null;
   const scrollTo = (y, duration = 1.8, onComplete, easing = easeInOutCubic) => {
     if (lenis) { lenis.scrollTo(y, { duration, easing, onComplete }); return; }
-    window.scrollTo({ top: typeof y === 'number' ? y : y.getBoundingClientRect().top + scrollY, behavior: 'smooth' });
-    if (onComplete) setTimeout(onComplete, duration * 1000);
+    const top = typeof y === 'number' ? y : y.getBoundingClientRect().top + window.scrollY;
+    const p = { y: window.scrollY };
+    let last = p.y;
+    nativeTween && nativeTween.kill();
+    nativeTween = gsap.to(p, {
+      y: Math.min(top, root.scrollHeight - innerHeight), duration, ease: easing,
+      onUpdate() {
+        if (Math.abs(window.scrollY - last) > 3) { this.kill(); return; } // the guest took over
+        window.scrollTo(0, p.y); last = window.scrollY;
+      },
+      onComplete,
+    });
+  };
+  // stop any programmatic scroll that is still running
+  const haltScroll = () => {
+    if (lenis && lenis.isScrolling === 'smooth') { lenis.stop(); lenis.start(); }
+    nativeTween && nativeTween.kill();
   };
   window.scrollTo(0, 0);
   window.__invite = { get lenis() { return lenis; } };
@@ -808,11 +825,18 @@ const WEDDING = {
     const st = introTL.scrollTrigger;
     if (autoplay || window.scrollY >= st.end - 4) return;
     const run = (autoplay = { cancelled: false });
-    const unbind = () => ['wheel', 'touchstart', 'keydown'].forEach((t) => removeEventListener(t, stop));
+    // cancel only on real scroll intent — a stray tap (which also sparkles) must not strand the envelope
+    const CANCEL = ['wheel', 'touchmove', 'keydown'];
+    const unbind = () => CANCEL.forEach((t) => removeEventListener(t, stop));
     const finish = () => { unbind(); if (autoplay === run) autoplay = null; };
-    function stop() { run.cancelled = true; finish(); }
+    function stop(e) {
+      if (e && e.type === 'keydown' && (e.repeat || (e.target === env && (e.key === 'Enter' || e.key === ' ')))) return;
+      run.cancelled = true;
+      haltScroll();
+      finish();
+    }
     // listen from the next tick so the tap that started this doesn't cancel it
-    setTimeout(() => ['wheel', 'touchstart', 'keydown'].forEach((t) => addEventListener(t, stop, { passive: true })), 0);
+    setTimeout(() => CANCEL.forEach((t) => addEventListener(t, stop, { passive: true })), 0);
 
     const r = glow.getBoundingClientRect();
     FX.sparkle(r.left + r.width / 2, r.top + r.height / 2, 22, .6);
@@ -833,7 +857,7 @@ const WEDDING = {
     setTimeout(next, 800);
   };
   env.addEventListener('click', openEnvelope);
-  env.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openEnvelope(); } });
+  env.addEventListener('keydown', (e) => { if (e.repeat) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openEnvelope(); } });
 
   // envelope tilts toward the mouse while it is still sealed
   if (finePointer) {

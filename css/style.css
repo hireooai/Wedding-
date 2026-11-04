@@ -793,7 +793,7 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
   border-radius: 50%;
   background: #ffc46b;
   box-shadow: 0 0 6px 2px rgba(255, 140, 40, .75);
-  opacity: .6;
+  opacity: 0; /* only visible while animating */
   z-index: -1;
 }
 .motion .ember { opacity: 0; animation: ember var(--t, 3.6s) ease-out infinite; animation-delay: var(--dl, 0s); }
@@ -817,7 +817,8 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
 
 /* live countdown chip on each timed event */
 .event__live {
-  display: inline-flex; align-items: center; flex-wrap: wrap;
+  display: flex; width: fit-content; max-width: 100%;
+  align-items: center; flex-wrap: wrap;
   gap: 4px 9px;
   margin: 14px 0 0;
   padding: 7px 14px 7px 11px;
@@ -831,6 +832,7 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
 }
 .event__live-label { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-soft); }
 .event__live-time { white-space: nowrap; }
+.event__live-time:empty { display: none; }
 .event__live-time b { font-weight: 700; font-size: 1.05em; }
 .event__live-dot {
   flex: none;
@@ -849,6 +851,8 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
 .event__live[data-state="done"] .event__live-dot { background: var(--gold); animation: none; }
 .event.is-dark .event__live { background: rgba(255, 255, 255, .06); border-color: rgba(230, 194, 122, .32); color: var(--gold-hi); }
 .event.is-dark .event__live-label { color: rgba(246, 231, 216, .72); }
+.event.is-dark .event__live[data-state="now"] { border-color: rgba(255, 150, 130, .55); }
+.event.is-dark .event__live[data-state="now"] .event__live-label { color: #ffb4a8; }
 
 .flame { transform-box: fill-box; transform-origin: 50% 100%; }
 .motion .flame { animation: flame 1.6s ease-in-out infinite; }
