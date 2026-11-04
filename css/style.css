@@ -369,29 +369,59 @@ sup { font-size: .5em; line-height: 0; vertical-align: super; margin-left: .04em
   font-size: clamp(2.7rem, 6.4vw, 4.4rem);
   color: var(--maroon);
 }
-.intro__hint {
-  display: flex; align-items: center; justify-content: center; gap: 12px;
-  margin: 6px 0 0;
-  font-size: 1.05rem;
-  color: var(--ink);
+.intro__cta {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 10px;
+  margin: clamp(12px, 2.2vh, 20px) 0 0;
+  padding: 13px 26px 13px 22px;
+  border: 1px solid rgba(230, 194, 122, .75);
+  border-radius: 999px;
+  background: linear-gradient(135deg, #951d22 0%, var(--maroon) 45%, #640d13 100%);
+  color: #fff;
+  font: 600 1.05rem/1.2 var(--serif);
+  letter-spacing: .02em;
+  box-shadow: 0 16px 32px -16px rgba(110, 15, 21, .8), inset 0 1px 0 rgba(255, 255, 255, .2);
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .4s var(--ease-out), box-shadow .4s;
 }
-.intro__sub { margin: 4px 0 0; font-size: .9rem; color: var(--ink-soft); font-style: italic; }
+.intro__cta svg { width: 20px; height: 20px; flex: none; color: var(--gold-hi); }
+.intro__cta::before { /* light sweep */
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 225, 160, .4) 50%, transparent 70%);
+  transform: translateX(-120%);
+}
+.intro__cta:hover { transform: translateY(-2px); box-shadow: 0 20px 36px -16px rgba(110, 15, 21, .9), inset 0 1px 0 rgba(255, 255, 255, .2); }
+.intro__cta:active { transform: scale(.97); }
+.motion .intro__cta { animation: ctaPulse 2.4s ease-out infinite; }
+.motion .intro__cta::before { animation: ctaShine 3.6s var(--ease-out) infinite 1s; }
+@keyframes ctaPulse {
+  0% { box-shadow: 0 16px 32px -16px rgba(110, 15, 21, .8), inset 0 1px 0 rgba(255, 255, 255, .2), 0 0 0 0 rgba(134, 21, 28, .4); }
+  70% { box-shadow: 0 16px 32px -16px rgba(110, 15, 21, .8), inset 0 1px 0 rgba(255, 255, 255, .2), 0 0 0 14px rgba(134, 21, 28, 0); }
+  100% { box-shadow: 0 16px 32px -16px rgba(110, 15, 21, .8), inset 0 1px 0 rgba(255, 255, 255, .2), 0 0 0 0 rgba(134, 21, 28, 0); }
+}
+@keyframes ctaShine { 0% { transform: translateX(-120%); } 45%, 100% { transform: translateX(120%); } }
+.intro__sub {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin: 12px 0 0;
+  font-size: .92rem; font-style: italic;
+  color: var(--ink-soft);
+}
+.intro__arrow { /* small chevron pointing the way you scroll */
+  width: 7px; height: 7px;
+  border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+}
+.motion .intro__arrow { animation: nudge 1.8s ease-in-out infinite; }
+@keyframes nudge { 0%, 100% { translate: 0 0; } 50% { translate: 0 4px; } }
 .hint-touch { display: none; }
-@media (hover: none) { .hint-touch { display: inline; } .hint-desktop { display: none; } }
-.mouse {
-  position: relative; flex: none;
-  width: 20px; height: 31px;
-  border: 1.5px solid var(--maroon);
-  border-radius: 12px;
+@media (hover: none) {
+  .hint-touch { display: inline; } .hint-desktop { display: none; }
+  .intro__arrow { transform: rotate(-135deg) translateY(-2px); }
+  @keyframes nudge { 0%, 100% { translate: 0 0; } 50% { translate: 0 -4px; } }
 }
-.mouse::after {
-  content: ""; position: absolute; left: 50%; top: 6px;
-  width: 3px; height: 6px; margin-left: -1.5px;
-  border-radius: 2px; background: var(--maroon);
-}
-.motion .mouse::after { animation: wheel 1.8s var(--ease-out) infinite; }
-@keyframes wheel { 0% { transform: translateY(0); opacity: 1; } 70% { transform: translateY(10px); opacity: 0; } 100% { opacity: 0; } }
-@media (hover: none) { .mouse { border-radius: 50%; width: 22px; height: 22px; } .mouse::after { top: 4px; } }
 
 /* ---------- hero (the card's second page) ---------- */
 .hero {

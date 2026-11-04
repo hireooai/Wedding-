@@ -6,6 +6,10 @@
 <title>Abhishek weds Pranjal</title>
 <meta name="description" content="Abhishek and Pranjal invite you to celebrate their wedding at Rajputana Resort, Dhampur — Haldi, Engagement, Bhat &amp; Manda, the Wedding Ceremony, Pheras and Vidai.">
 <meta name="theme-color" content="#86151c">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
 <meta property="og:title" content="Abhishek weds Pranjal">
 <meta property="og:description" content="You're invited — open the envelope to see the celebrations.">
 <meta property="og:image" content="assets/envelope.jpg">
@@ -69,8 +73,11 @@
           </div>
         </div>
         <h2 class="intro__title script">You’re Invited</h2>
-        <p class="intro__hint"><span class="mouse" aria-hidden="true"></span><span class="hint-desktop">Scroll to open your invitation</span><span class="hint-touch">Swipe up to open your invitation</span></p>
-        <p class="intro__sub">or tap the seal</p>
+        <button class="intro__cta" type="button" data-cursor="Open">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 4l9 6.5V20H3z"/><path d="m3 10.5 9 6 9-6"/></svg>
+          <span class="hint-desktop">Click to open your invitation</span><span class="hint-touch">Tap to open your invitation</span>
+        </button>
+        <p class="intro__sub"><span class="hint-desktop">or scroll down to open</span><span class="hint-touch">or swipe up to open</span><span class="intro__arrow" aria-hidden="true"></span></p>
       </div>
     </div>
 

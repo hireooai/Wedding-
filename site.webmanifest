@@ -1,0 +1,11 @@
+{
+  "name": "Abhishek weds Pranjal",
+  "short_name": "Abhi & Pranju",
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ],
+  "theme_color": "#86151c",
+  "background_color": "#fffaf8",
+  "display": "standalone"
+}
